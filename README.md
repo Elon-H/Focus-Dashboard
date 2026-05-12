@@ -13,7 +13,9 @@
 
 - 项目 Dashboard
   - 首页显示所有项目卡片。
-  - 卡片展示项目名称、描述、todo 总数、已完成数、未完成数、最近 DDL、更新时间。
+  - 首页集中展示所有项目里的 in-progress todo，并在下方展示所有待开始的 todo。
+  - 可以在首页直接点击 `todo` / `in-progress` 状态按钮，让任务按 `todo -> in-progress -> done -> todo` 流转。
+  - 项目卡片保持紧凑，只展示项目名称、描述、未完成 todo 数和最近 DDL。
   - 支持创建项目、加载 demo 项目、进入详情页。
 
 - 项目详情页
@@ -123,8 +125,8 @@ npm run smoke
 3. 点击项目卡片进入详情页。
 4. 分别新增一个 idea、todo、reference。
 5. 给 todo 设置 `ddl` 和 `expectedFinishTime`，切换状态筛选和 DDL 排序。
-6. 把 todo 勾选为完成，再刷新页面，确认状态仍然保留。
-7. 回到 Dashboard，确认项目卡片统计数字更新。
+6. 点击 todo 的 status badge 改变状态，再刷新页面，确认状态仍然保留。
+7. 回到 Dashboard，确认 In Progress / Todo 汇总和项目卡片未完成数量同步更新。
 8. 修改番茄钟时长，开始、暂停、继续、重置，刷新页面后确认设置仍然保留。
 9. 打开 Calendar，确认 todo 日期事件和 Focus session 统计正确显示。
 10. 双击 `Start Focus Projects.command`，确认浏览器自动打开本地页面。
@@ -135,6 +137,12 @@ npm run smoke
 15. Focus Projects 已经打开时再次点击 Dock app，确认优先切到已有标签页。
 16. 在项目详情页点击 todo 的 status badge，确认按 `todo -> in-progress -> done -> todo` 循环。
 17. 确认 done 任务进入默认折叠的 Done Archive，点回 todo 后回到主 Todo List。
+18. 创建或编辑多个 in-progress todo，确认它们会集中出现在 Dashboard 的 In Progress 区域。
+19. 创建或编辑多个 todo 状态任务，确认它们会集中出现在 Dashboard 的 Todo 区域。
+20. 在 Dashboard 点击 `todo` 状态按钮，确认任务移动到 In Progress；再点击 `in-progress`，确认任务变为 done 并从首页汇总消失。
+21. 确认 Dashboard 项目卡片只显示未完成 todo 数和最近 DDL。
+22. 清空或输入非法 timer 时长后保存，确认不会出现 `NaN:NaN`。
+23. 删除 idea、todo 或 reference 时，确认会先弹出确认框。
 
 ## 后续增强方向
 

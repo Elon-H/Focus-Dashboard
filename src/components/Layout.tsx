@@ -18,76 +18,73 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [location.hash, location.pathname]);
 
   return (
-    <div className="min-h-screen bg-[#f6f7f4] text-slate-900">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1480px] flex-col lg:flex-row">
-        <aside className="border-b border-slate-200 bg-white/85 px-5 py-4 backdrop-blur lg:sticky lg:top-0 lg:h-screen lg:w-72 lg:border-b-0 lg:border-r lg:px-6 lg:py-7">
-          <div className="flex items-center justify-between gap-4 lg:block">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
-                Local Workspace
-              </p>
-              <h1 className="mt-2 text-2xl font-bold tracking-normal text-slate-950">
-                Focus Projects
-              </h1>
-            </div>
-            <div className="rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-right lg:mt-6 lg:text-left">
-              <p className="text-xs font-medium text-emerald-800">Today</p>
-              <p className="text-xl font-bold text-emerald-950">
-                {data.dailyFocusCount.count}
-                <span className="ml-1 text-sm font-semibold text-emerald-800">sessions</span>
-              </p>
+    <div className="min-h-screen bg-[#f5f7fb] text-slate-900">
+      <div className="flex min-h-screen w-full flex-col lg:flex-row">
+        <aside className="border-b border-slate-200 bg-slate-950 px-4 py-3 text-white lg:sticky lg:top-0 lg:h-screen lg:w-20 lg:border-b-0 lg:border-r lg:border-slate-800 lg:px-3 lg:py-5">
+          <div className="flex items-center justify-between gap-3 lg:flex-col">
+            <Link
+              to="/"
+              className="grid h-10 w-10 place-items-center rounded-xl bg-white text-base font-black text-slate-950"
+              title="Focus Projects"
+            >
+              F
+            </Link>
+            <div
+              className="rounded-lg bg-emerald-400/15 px-3 py-1.5 text-center text-xs font-bold text-emerald-100 lg:px-2"
+              title="Today completed focus sessions"
+            >
+              <p className="leading-none">{data.dailyFocusCount.count}</p>
+              <p className="mt-0.5 text-[9px] uppercase tracking-normal text-emerald-200">Focus</p>
             </div>
           </div>
 
-          <nav className="mt-4 flex gap-2 lg:mt-8 lg:flex-col">
+          <nav className="mt-3 flex gap-2 overflow-x-auto lg:mt-6 lg:flex-col lg:items-center lg:overflow-visible">
             <NavLink
               to="/"
+              title="Dashboard"
               className={({ isActive }) =>
-                `rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                `min-w-fit rounded-lg px-3 py-2 text-center text-xs font-bold transition lg:w-14 lg:px-2 ${
                   isActive
-                    ? "bg-slate-950 text-white"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+                    ? "bg-white text-slate-950"
+                    : "text-slate-300 hover:bg-white/10 hover:text-white"
                 }`
               }
             >
-              Dashboard
+              <span className="lg:hidden">Dashboard</span>
+              <span className="hidden lg:block">Home</span>
             </NavLink>
             <NavLink
               to="/calendar"
+              title="Calendar"
               className={({ isActive }) =>
-                `rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                `min-w-fit rounded-lg px-3 py-2 text-center text-xs font-bold transition lg:w-14 lg:px-2 ${
                   isActive
-                    ? "bg-slate-950 text-white"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+                    ? "bg-white text-slate-950"
+                    : "text-slate-300 hover:bg-white/10 hover:text-white"
                 }`
               }
             >
-              Calendar
+              Cal
             </NavLink>
             <Link
               to="/#timer"
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+              title="Timer"
+              className="min-w-fit rounded-lg px-3 py-2 text-center text-xs font-bold text-slate-300 transition hover:bg-white/10 hover:text-white lg:w-14 lg:px-2"
             >
               Timer
             </Link>
             <Link
               to="/#projects"
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+              title="Projects"
+              className="min-w-fit rounded-lg px-3 py-2 text-center text-xs font-bold text-slate-300 transition hover:bg-white/10 hover:text-white lg:w-14 lg:px-2"
             >
               Projects
             </Link>
           </nav>
-
-          <div className="mt-8 hidden rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 lg:block">
-            <p className="font-semibold text-slate-900">本地优先</p>
-            <p className="mt-2 leading-6">
-              数据保存在浏览器 localStorage 中，不需要后端、登录或外部 API。
-            </p>
-          </div>
         </aside>
 
-        <main className="min-w-0 flex-1 px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
-          <div className="space-y-6">
+        <main className="min-w-0 flex-1 px-3 py-4 sm:px-5 lg:px-5 lg:py-5">
+          <div className="mx-auto max-w-[1400px] space-y-4">
             <TimerPanel />
             {children}
           </div>

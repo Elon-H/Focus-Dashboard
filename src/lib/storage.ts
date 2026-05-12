@@ -17,6 +17,12 @@ export const defaultAppData: AppData = {
   focusHistory: {},
 };
 
+function normalizeTimerMinute(value: unknown, fallback: number): number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0
+    ? Math.floor(value)
+    : fallback;
+}
+
 function normalizeFocusHistory(data: Partial<AppData>): Record<string, number> {
   const rawHistory = data.focusHistory;
   const history: Record<string, number> = {};
@@ -60,11 +66,18 @@ function normalizeAppData(data: Partial<AppData>): AppData {
   return {
     projects: Array.isArray(data.projects) ? data.projects : [],
     timerSettings: {
-      focusMinutes: data.timerSettings?.focusMinutes ?? defaultAppData.timerSettings.focusMinutes,
-      shortBreakMinutes:
-        data.timerSettings?.shortBreakMinutes ?? defaultAppData.timerSettings.shortBreakMinutes,
-      longBreakMinutes:
-        data.timerSettings?.longBreakMinutes ?? defaultAppData.timerSettings.longBreakMinutes,
+      focusMinutes: normalizeTimerMinute(
+        data.timerSettings?.focusMinutes,
+        defaultAppData.timerSettings.focusMinutes,
+      ),
+      shortBreakMinutes: normalizeTimerMinute(
+        data.timerSettings?.shortBreakMinutes,
+        defaultAppData.timerSettings.shortBreakMinutes,
+      ),
+      longBreakMinutes: normalizeTimerMinute(
+        data.timerSettings?.longBreakMinutes,
+        defaultAppData.timerSettings.longBreakMinutes,
+      ),
     },
     dailyFocusCount: {
       date: today,

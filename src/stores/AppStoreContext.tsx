@@ -74,6 +74,10 @@ function nextTodoStatus(status: TodoStatus): TodoStatus {
   return "todo";
 }
 
+function sanitizeTimerMinute(value: number): number {
+  return Number.isFinite(value) && value > 0 ? Math.floor(value) : 1;
+}
+
 export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<AppData>(() => loadAppData());
 
@@ -289,9 +293,9 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     setData((current) => ({
       ...current,
       timerSettings: {
-        focusMinutes: Math.max(1, settings.focusMinutes),
-        shortBreakMinutes: Math.max(1, settings.shortBreakMinutes),
-        longBreakMinutes: Math.max(1, settings.longBreakMinutes),
+        focusMinutes: sanitizeTimerMinute(settings.focusMinutes),
+        shortBreakMinutes: sanitizeTimerMinute(settings.shortBreakMinutes),
+        longBreakMinutes: sanitizeTimerMinute(settings.longBreakMinutes),
       },
     }));
   }, []);

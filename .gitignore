@@ -12,3 +12,4 @@ pnpm-debug.log*
 /vite.config.d.ts
 /logs/
 /Focus Projects.app/
+.superpowers/

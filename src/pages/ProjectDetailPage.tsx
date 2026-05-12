@@ -110,6 +110,13 @@ export function ProjectDetailPage() {
     navigate("/");
   }
 
+  function confirmDelete(label: string, name: string, onConfirm: () => void) {
+    const confirmed = window.confirm(`删除${label} "${name}"？这个操作不能撤销。`);
+    if (confirmed) {
+      onConfirm();
+    }
+  }
+
   return (
     <div className="space-y-6">
       <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -224,7 +231,9 @@ export function ProjectDetailPage() {
                       setEditingTodo(todo);
                       setAddingTodo(false);
                     }}
-                    onDelete={() => deleteTodo(project.id, todo.id)}
+                    onDelete={() =>
+                      confirmDelete("todo", todo.title, () => deleteTodo(project.id, todo.id))
+                    }
                   />
                 ))}
               </div>
@@ -259,7 +268,9 @@ export function ProjectDetailPage() {
                           setEditingTodo(todo);
                           setAddingTodo(false);
                         }}
-                        onDelete={() => deleteTodo(project.id, todo.id)}
+                        onDelete={() =>
+                          confirmDelete("todo", todo.title, () => deleteTodo(project.id, todo.id))
+                        }
                       />
                     ))}
                   </div>
@@ -318,7 +329,9 @@ export function ProjectDetailPage() {
                       setEditingIdea(idea);
                       setAddingIdea(false);
                     }}
-                    onDelete={() => deleteIdea(project.id, idea.id)}
+                    onDelete={() =>
+                      confirmDelete("idea", idea.title, () => deleteIdea(project.id, idea.id))
+                    }
                   />
                 ))}
               </div>
@@ -373,7 +386,11 @@ export function ProjectDetailPage() {
                       setEditingReference(reference);
                       setAddingReference(false);
                     }}
-                    onDelete={() => deleteReference(project.id, reference.id)}
+                    onDelete={() =>
+                      confirmDelete("reference", reference.title, () =>
+                        deleteReference(project.id, reference.id),
+                      )
+                    }
                   />
                 ))}
               </div>

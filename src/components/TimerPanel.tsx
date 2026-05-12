@@ -96,27 +96,17 @@ export function TimerPanel() {
   }
 
   return (
-    <section id="timer" className="rounded-lg border border-slate-200 bg-white p-5 shadow-panel">
-      <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+    <section id="timer" className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+      <div className="grid gap-4 xl:grid-cols-[minmax(220px,0.7fr)_minmax(260px,1fr)_minmax(280px,0.95fr)] xl:items-center">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-teal-700">
             Pomodoro
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-950">番茄钟专注倒计时</h2>
-        </div>
-        <div className="rounded-lg bg-emerald-50 px-4 py-3 text-emerald-950">
-          <p className="text-xs font-semibold uppercase text-emerald-700">Today completed</p>
-          <p className="text-2xl font-bold">{data.dailyFocusCount.count}</p>
-        </div>
-      </div>
-
-      <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-5">
-          <div className="flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             {(Object.keys(modeLabels) as TimerMode[]).map((item) => (
               <button
                 key={item}
-                className={`btn ${
+                className={`btn px-3 py-1.5 text-xs ${
                   mode === item ? "bg-slate-950 text-white" : "btn-secondary"
                 }`}
                 type="button"
@@ -126,26 +116,39 @@ export function TimerPanel() {
               </button>
             ))}
           </div>
-
-          <div className="mt-8 flex flex-col items-center text-center">
-            <p className="rounded-lg bg-white px-3 py-1 text-sm font-bold text-teal-800 shadow-sm">
-              Current Mode: {modeLabels[mode]}
+          <div className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-emerald-950">
+            <p className="text-[11px] font-semibold uppercase text-emerald-700">
+              Today completed
             </p>
-            <div className="mt-5 text-[clamp(3.5rem,12vw,8rem)] font-black leading-none tracking-normal text-slate-950">
-              {formatSeconds(remainingSeconds)}
-            </div>
-            <div className="mt-5 h-3 w-full max-w-xl overflow-hidden rounded-full bg-white">
-              <div
-                className="h-full rounded-full bg-teal-700 transition-all"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <p className="mt-3 text-sm font-medium text-slate-600">
-              Status: {status === "running" ? "Running" : status === "paused" ? "Paused" : "Idle"}
+            <p className="text-xl font-bold">
+              {data.dailyFocusCount.count}
+              <span className="ml-1 text-xs font-semibold text-emerald-800">sessions</span>
             </p>
           </div>
+        </div>
 
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-bold text-teal-800">
+              Current Mode: {modeLabels[mode]}
+            </p>
+            <p className="rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+              {status === "running" ? "Running" : status === "paused" ? "Paused" : "Idle"}
+            </p>
+          </div>
+          <div className="mt-2 text-[clamp(2.5rem,6vw,4.75rem)] font-black leading-none tracking-normal text-slate-950">
+            {formatSeconds(remainingSeconds)}
+          </div>
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100">
+            <div
+              className="h-full rounded-full bg-teal-700 transition-all"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex flex-wrap gap-2">
             {status === "running" ? (
               <button className="btn btn-secondary" type="button" onClick={pause}>
                 暂停
@@ -160,41 +163,43 @@ export function TimerPanel() {
             </button>
           </div>
 
-          {message && (
-            <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
-              {message}
-            </div>
-          )}
-        </div>
-
-        <form className="rounded-lg border border-slate-200 bg-white p-4" onSubmit={applySettings}>
-          <h3 className="text-base font-bold text-slate-950">自定义时长</h3>
-          <div className="mt-4 space-y-3">
+          <form
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            onSubmit={applySettings}
+          >
+            <div className="grid gap-2 sm:grid-cols-[1fr_1fr_1fr_auto] xl:grid-cols-2 2xl:grid-cols-[1fr_1fr_1fr_auto]">
             <NumberField
-              label="Focus minutes"
+              label="Focus"
               value={settingsDraft.focusMinutes}
               onChange={(value) => setSettingsDraft((current) => ({ ...current, focusMinutes: value }))}
             />
             <NumberField
-              label="Short break"
+              label="Short"
               value={settingsDraft.shortBreakMinutes}
               onChange={(value) =>
                 setSettingsDraft((current) => ({ ...current, shortBreakMinutes: value }))
               }
             />
             <NumberField
-              label="Long break"
+              label="Long"
               value={settingsDraft.longBreakMinutes}
               onChange={(value) =>
                 setSettingsDraft((current) => ({ ...current, longBreakMinutes: value }))
               }
             />
-          </div>
-          <button className="btn btn-primary mt-4 w-full" type="submit">
-            保存设置
-          </button>
-        </form>
+              <button className="btn btn-primary self-end whitespace-nowrap px-3 py-2" type="submit">
+                保存
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+
+      {message && (
+        <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
+          {message}
+        </div>
+      )}
     </section>
   );
 }

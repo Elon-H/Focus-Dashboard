@@ -34,6 +34,11 @@ if (!storageSource.includes("localStorage")) {
   process.exit(1);
 }
 
+if (!storageSource.includes("normalizeTimerMinute") || !storageSource.includes("Number.isFinite")) {
+  console.error("Storage layer must sanitize timer settings when loading persisted data.");
+  process.exit(1);
+}
+
 const appSource = readFileSync(join(root, "src/App.tsx"), "utf8");
 if (!appSource.includes("Route") || !appSource.includes("ProjectDetailPage")) {
   console.error("App routes are not wired.");
@@ -56,9 +61,26 @@ if (!layoutSource.includes('to="/#timer"') || !layoutSource.includes('to="/#proj
   process.exit(1);
 }
 
+if (!layoutSource.includes("lg:w-20")) {
+  console.error("Layout should use a slim desktop navigation rail.");
+  process.exit(1);
+}
+
 const dashboardSource = readFileSync(join(root, "src/pages/DashboardPage.tsx"), "utf8");
 if (dashboardSource.includes("TimerPanel")) {
   console.error("Dashboard should not mount TimerPanel directly.");
+  process.exit(1);
+}
+
+if (
+  !dashboardSource.includes("In Progress") ||
+  !dashboardSource.includes("Todo") ||
+  !dashboardSource.includes('collectDashboardTodos(projects, "in-progress")') ||
+  !dashboardSource.includes('collectDashboardTodos(projects, "todo")') ||
+  !dashboardSource.includes("DashboardTodoCard") ||
+  !dashboardSource.includes("cycleTodoStatus")
+) {
+  console.error("Dashboard must show cross-project In Progress and Todo summaries with status cycling.");
   process.exit(1);
 }
 
@@ -80,6 +102,22 @@ if (
   !timerPanelSource.includes("new Notification")
 ) {
   console.error("TimerPanel must auto-request browser notifications from the start action.");
+  process.exit(1);
+}
+
+if (!timerPanelSource.includes("clamp(2.5rem")) {
+  console.error("TimerPanel should use compact timer typography.");
+  process.exit(1);
+}
+
+const projectCardSource = readFileSync(join(root, "src/components/ProjectCard.tsx"), "utf8");
+if (
+  !projectCardSource.includes('todo.status !== "done"') ||
+  !projectCardSource.includes("openCount") ||
+  !projectCardSource.includes("getNearestDdl(openTodos)") ||
+  projectCardSource.includes("formatDateTime")
+) {
+  console.error("Project cards must show unfinished todo count and nearest DDL only.");
   process.exit(1);
 }
 
@@ -151,6 +189,21 @@ if (
 const storeSource = readFileSync(join(root, "src/stores/AppStoreContext.tsx"), "utf8");
 if (!storeSource.includes("cycleTodoStatus") || !storeSource.includes("nextTodoStatus")) {
   console.error("Todo status cycling is not wired in the app store.");
+  process.exit(1);
+}
+
+if (!storeSource.includes("sanitizeTimerMinute") || !storeSource.includes("Number.isFinite")) {
+  console.error("App store must sanitize timer settings before saving.");
+  process.exit(1);
+}
+
+if (
+  !projectDetailSource.includes("confirmDelete") ||
+  !projectDetailSource.includes('confirmDelete("todo"') ||
+  !projectDetailSource.includes('confirmDelete("idea"') ||
+  !projectDetailSource.includes('confirmDelete("reference"')
+) {
+  console.error("Project detail destructive item deletes must require confirmation.");
   process.exit(1);
 }
 
